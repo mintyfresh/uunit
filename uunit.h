@@ -23,8 +23,6 @@
 # ifndef __UUNIT_H__
 # define __UUNIT_H__
 
-# include <stdint.h>
-
 # define unittest __unittest(__LINE__, __COUNTER__)
 
 # if !defined(NDEBUG) && !defined(NUNITTEST)
