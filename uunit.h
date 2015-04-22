@@ -28,7 +28,7 @@
 # if !defined(NDEBUG) && !defined(NUNITTEST)
 
 # define __unittest(line, counter) \
-	__CONSTRUCTOR(__concat(_test_func_, line, counter))
+	__CONSTRUCTOR(__concat(_test_func_, line, counter), line, counter)
 
 # else /* ndebug || nunittest */
 
@@ -56,7 +56,7 @@
 #	define __UNUSED(func) \
 	__pragma(warning(suppress:4100)) \
 	static void func(void)
-#	define __CONSTRUCTOR(func) \
+#	define __CONSTRUCTOR(func, line, counter) \
 	static void __cdecl func(void); \
 	__declspec(allocate(".CRT$XCU")) void(__cdecl *__concat(func, _, _))(void) = func; \
 	static void __cdecl func(void)
@@ -64,8 +64,8 @@
 #	define __UNUSED(func) \
 	static void func(void) __attribute__((unused)); \
 	static void func(void)
-#	define __CONSTRUCTOR(func) \
-	static void func(void) __attribute__((constructor)); \
+#	define __CONSTRUCTOR(func, line, counter) \
+	static void func(void) __attribute__((constructor(__concat(1, line, counter)))); \
 	static void func(void)
 # else
 #	error Unsupported C compiler.
